@@ -14,9 +14,12 @@ class Human:
         self.money = 100
         self.happiness = 50
         self.satiety = 50
+        self.health = 100
+        self.social = 50
         self.job = None
         self.car = None
         self.house = None
+        self.bladder = 50  # Добавляем параметр для похода в туалет
 
     def get_house(self, house):
         self.house = house
@@ -32,6 +35,7 @@ class Human:
         if self.house and self.house.food > 0:
             self.satiety += 20
             self.house.food -= 1
+            self.bladder += 10 
             print(f"{self.name} поел. Сытость: {self.satiety}")
         else:
             print(f"У {self.name} нет еды.")
@@ -42,6 +46,7 @@ class Human:
             self.money += self.job.salary
             self.happiness -= self.job.happiness_decrease
             self.satiety -= 10
+            self.bladder += 5 
             print(f"{self.name} поработал. Деньги: {self.money}, Счастье: {self.happiness}, Сытость: {self.satiety}")
         else:
             print(f"У {self.name} нет работы.")
@@ -62,6 +67,13 @@ class Human:
                 print(f"{self.name} купил топливо. Деньги: {self.money}, Топливо: {self.car.fuel}")
             else:
                 print(f"У {self.name} недостаточно денег на топливо.")
+        elif item == 'medicine':
+            if self.money >= 30:
+                self.health += 20
+                self.money -= 30
+                print(f"{self.name} купил лекарства. Деньги: {self.money}, Здоровье: {self.health}")
+            else:
+                print(f"У {self.name} недостаточно денег на лекарства.")
 
     # Отдых
     def rest(self):
@@ -87,16 +99,31 @@ class Human:
         else:
             print(f"У {self.name} нет машины для ремонта.")
 
+    # Социальное взаимодействие
+    def socialize(self):
+        self.social += 10
+        self.happiness += 5
+        print(f"{self.name} пообщался с друзьями. Социальность: {self.social}, Счастье: {self.happiness}")
+
+    # Поход в туалет
+    def use_toilet(self):
+        if self.bladder > 0:
+            self.bladder = 0
+            self.happiness += 5
+            print(f"{self.name} сходил в туалет. Счастье: {self.happiness}")
+        else:
+            print(f"{self.name} не хочет в туалет.")
+
     # Проверка жизнеспособности
     def check_vitality(self):
-        if self.satiety <= 0 or self.happiness <= 0 or self.money < 0:
+        if self.satiety <= 0 or self.happiness <= 0 or self.money < 0 or self.health <= 0:
             print(f"{self.name} не смог выжить.")
             return False
         return True
 
     # Показать статус
     def show_status(self):
-        print(f"Статус {self.name}: Деньги: {self.money}, Счастье: {self.happiness}, Сытость: {self.satiety}")
+        print(f"Статус {self.name}: Деньги: {self.money}, Счастье: {self.happiness}, Сытость: {self.satiety}, Здоровье: {self.health}, Социальность: {self.social}, Потребность в туалете: {self.bladder}")
         
 class Auto:
     def __init__(self, brand, fuel, durability, fuel_consumption):
@@ -140,25 +167,45 @@ actions = {
     '5': human.rest,
     '6': human.clean,
     '7': human.repair_car,
-    '8': human.show_status
+    '8': human.socialize,
+    '9': human.use_toilet,
+    '10': human.show_status
 }
 
 for day in range(1, 31):
     print(f"\nДень {day}:")
     human.show_status()
-    print("Выберите действие:")
-    print("1: Поесть")
-    print("2: Работать")
-    print("3: Купить еду")
-    print("4: Купить топливо")
-    print("5: Отдохнуть")
-    print("6: Убраться в доме")
-    print("7: Починить машину")
-    print("8: Показать статус")
-    action = input("Введите номер действия: ")
-    if action in actions:
-        actions[action]()
-    else:
-        print("Неверное действие.")
+    for _ in range(3):
+        print("Выберите действие:")
+        print("1: Поесть")
+        print("2: Работать")
+        print("3: Купить еду")
+        print("4: Купить топливо")
+        print("5: Отдохнуть")
+        print("6: Убраться в доме")
+        print("7: Починить машину")
+        print("8: Пообщаться с друзьями")
+        print("9: Сходить в туалет")
+        print("10: Показать статус")
+        action = input("Введите номер действия: ")
+        if action in actions:
+            actions[action]()
+        else:
+            print("Неверное действие.")
+        if not human.check_vitality():
+            break
     if not human.check_vitality():
         break
+    # Случайные события
+    if random.random() < 0.1:
+        event = random.choice(['болезнь', 'авария', 'потеря работы'])
+        if event == 'болезнь':
+            human.health -= 20
+            print(f"{human.name} заболел. Здоровье: {human.health}")
+        elif event == 'авария':
+            if human.car:
+                human.car.durability -= 50
+                print(f"{human.name} попал в аварию. Прочность машины: {human.car.durability}")
+        elif event == 'потеря работы':
+            human.job = None
+            print(f"{human.name} потерял работу.")

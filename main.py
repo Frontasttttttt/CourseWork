@@ -10,16 +10,16 @@ import random
 
 class Human:
     def __init__(self, name):
-        self.name = name
-        self.money = 100
-        self.happiness = 50
-        self.satiety = 50
-        self.health = 100
-        self.social = 50
-        self.job = None
-        self.car = None
-        self.house = None
-        self.bladder = 50  # Добавляем параметр для похода в туалет
+        self.name = name  # имя
+        self.money = 100  # деньги
+        self.happiness = 50  # счастье
+        self.satiety = 50  # сытость
+        self.health = 100  # здоровье
+        self.social = 50  # социальность
+        self.job = None  # работа
+        self.car = None  # машина
+        self.house = None  # дом
+        self.bladder = 50  # потребность в туалете
 
     def get_house(self, house):
         self.house = house
@@ -196,6 +196,7 @@ for day in range(1, 31):
             break
     if not human.check_vitality():
         break
+    
     # Случайные события
     if random.random() < 0.1:
         event = random.choice(['болезнь', 'авария', 'потеря работы'])

@@ -19,7 +19,7 @@ class Human:
         self.job = None  # работа
         self.car = None  # машина
         self.house = None  # дом
-        self.bladder = 50  # потребность в туалете
+        self.bladder = 50  # Скибиди туалеты нападают
 
     def get_house(self, house):
         self.house = house

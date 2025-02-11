@@ -1,7 +1,7 @@
 #    //   / /
 #   //___         __        ___         __     __  ___     ___        ___     __  ___  __  ___
-#  / ___        //  ) )   //   ) )   //   ) )   / /      //   ) )   ((   ) )   / /      / /
-# //           //        //   / /   //   / /   / /      //   / /     \ \      / /      / /
+#  / ___        //  ) )   //   ) )   //   ) )   / /      //   ) )   ((   ) )   / /      / /                 
+# //           //        //   / /   //   / /   / /      //   / /     \ \      / /      / /                  + 5
 #//           //        ((___/ /   //   / /   / /      ((___( (   //   ) )   / /      / /
 
 
@@ -152,7 +152,7 @@ class Job:
         self.happiness_decrease = happiness_decrease
 
 house = House()
-car = Auto("Toyota", 50, 100, 5)
+car = Auto("Zhigul", 50, 100, 5)
 job = Job("Developer", 100, 10)
 human = Human("John")
 human.get_house(house)
